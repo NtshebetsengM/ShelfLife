@@ -15,6 +15,7 @@ namespace ShelfLife.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
         public DbSet<BookGenre> BookGenres { get; set; }
+        public DbSet<ReadingRecord> ReadingRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

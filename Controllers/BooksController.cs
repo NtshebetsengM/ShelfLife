@@ -41,5 +41,34 @@ namespace ShelfLife.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));         
         }
+
+        public IActionResult Edit(int id)
+        {
+            var book = _context.Books
+                .FirstOrDefault(b => b.BookId == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            return View(book);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Book book)
+        {
+            var existingBook = _context.Books
+                .FirstOrDefault(b => b.BookId == id); 
+           
+            if (existingBook == null) {
+                return NotFound();
+            }
+                if (ModelState.IsValid)
+                {
+                    _context.Books.Update(existingBook);
+                    _context.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(book);
+        }
     }
 }
