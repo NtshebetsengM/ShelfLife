@@ -1,0 +1,31 @@
+﻿@model List<Book>
+
+@{
+   
+}
+
+@foreach (var book in Model)
+{
+    <div>
+        <a asp-controller="Books" asp-action="Details" asp-route-id="@book.BookId"><h2>
+            @book.Title</h2>
+        </a>
+        <img src="@book.CoverUrl" alt="@book.Title" />
+
+        <p>
+            @foreach (var bookAuthor in book.BookAuthors)
+            {
+                <span>@bookAuthor.Author.Name</span>
+            }
+        </p>
+        <p>
+            @foreach(var bookGenre in book.BookGenres)
+            {
+                <span>@bookGenre.Genre.Name</span>
+            }
+        </p>
+        <p>@book.Description</p>
+        <p>@book.DatePublished</p>
+    </div>
+}
+
