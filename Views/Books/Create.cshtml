@@ -1,0 +1,40 @@
+﻿@model Book
+@{
+}
+<form asp-controller="Books" asp-action="Create" method="post">
+    <label asp-for="Title"></label>
+    <input asp-for="Title" />
+
+    <label>Authors:</label>
+    @foreach (var author in ViewBag.Authors)
+    {
+        <div>
+            <input type="checkbox" name="SelectedAuthorIds" value="@author.AuthorId" />
+            <label>@author.Name</label>
+        </div>
+    }
+
+    <label>Or add a new author:</label>
+    <input type="text" name="NewAuthorName" />
+
+    <label>Genres:</label>
+    @foreach (var genre in ViewBag.Genres)
+    {
+        <div>
+            <input type="checkbox" name="SelectedGenreIds" value="@genre.GenreId" />
+            <label>@genre.Name</label>
+        </div>
+    }
+
+    <label asp-for="Description"></label>
+    <textarea asp-for="Description"></textarea>
+
+    <label asp-for="DatePublished"></label>
+    <input asp-for="DatePublished" type="date" />
+
+    <label asp-for="CoverUrl"></label>
+    <input asp-for="CoverUrl" />
+
+
+    <button type="submit">Save</button>
+</form>

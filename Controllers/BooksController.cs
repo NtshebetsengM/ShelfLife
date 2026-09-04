@@ -32,14 +32,48 @@ namespace ShelfLife.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.Authors = _context.Authors.ToList();
+            ViewBag.Genres = _context.Genres.ToList();
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Book book)
+        public IActionResult Create(Book book, List<int> SelectedAuthorIds, List<int> SelectedGenreIds, string NewAuthorName)
         {
+            if (ModelState.IsValid)
+            {
                 _context.Books.Add(book);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));         
+
+                if (!string.IsNullOrEmpty(NewAuthorName))
+                {
+                    var newAuthor = new Author { Name = NewAuthorName };
+                    _context.Authors.Add(newAuthor);
+                    _context.SaveChanges();
+                    SelectedAuthorIds.Add(newAuthor.AuthorId);
+                }
+
+                foreach (var authorId in SelectedAuthorIds)
+                {
+                    _context.BookAuthors.Add(new BookAuthor
+                    {
+                        BookId = book.BookId,
+                        AuthorId = authorId
+                    });
+                }
+
+                foreach (var genreId in SelectedGenreIds)
+                {
+                    _context.BookGenres.Add(new BookGenre
+                    {
+                        BookId = book.BookId,
+                        GenreId = genreId
+                    });
+                }
+
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(book);
         }
     }
 }
